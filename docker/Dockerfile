@@ -10,10 +10,13 @@ RUN install-php-extensions pdo_mysql intl opcache zip
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-COPY app/ /app
+# Copy only composer files first — this layer is cached unless dependencies change
+COPY app/composer.json app/composer.lock /app/
 
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-scripts \
-    && php bin/console cache:clear
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-scripts
+
+# Now copy the rest of the app code
+COPY app/ /app
 
 COPY docker/Caddyfile /etc/frankenphp/Caddyfile
 

@@ -65,4 +65,3 @@ final class ApiInspectorController extends AbstractController
         return $this->json(['message' => 'Job completed!']);
     }
 }
-dd(123);

@@ -68,7 +68,7 @@ readonly class AssessmentService
                 $assessment->getInspector()->getId(),
             ),
         );
-//        dd($assessment);
+
         $assessment->getJob()->setStatus(JobStatus::IN_PROGRESS);
         $assessment->setStatus(JobStatus::IN_PROGRESS);
         $this->assessmentRepository->save($assessment, true);
