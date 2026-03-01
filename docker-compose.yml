@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: inspector_app
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app:/app
+      - vendor_data:/app/vendor
+    environment:
+      APP_ENV: dev
+      DATABASE_URL: "mysql://root:root@db:3306/inspector"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: inspector_db
+    environment:
+      MYSQL_DATABASE: inspector
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
+  vendor_data:
